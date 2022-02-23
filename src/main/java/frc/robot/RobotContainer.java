@@ -6,9 +6,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.TeleopDriveCommand;
+import frc.robot.commands.drive.TeleopDriveCommand;
+import frc.robot.controls.Controls;
 import frc.robot.subsystems.DriveSubsystem;
 
 
@@ -19,24 +19,20 @@ import frc.robot.subsystems.DriveSubsystem;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final Joystick joystick = new Joystick(0);
+    public static Constants CONSTANTS;
+    public static DriveSubsystem DRIVE;
+    public static Controls CONTROLS;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        // The robot's subsystems and commands are defined here...
-        DriveSubsystem driveSubsystem = new DriveSubsystem();
+        CONSTANTS = new Constants();
+        DRIVE = new DriveSubsystem();
 
-        driveSubsystem.setDefaultCommand(
-                new TeleopDriveCommand(
-                        () -> joystick.getRawAxis(2),     // Forward & backwards
-                        () -> joystick.getRawAxis(1),     // Left & Right
-                        () -> joystick.getRawAxis(3),     // Rotation
-                        () -> false,                      // Field Orientation Mode
-                        driveSubsystem
-                    )
-                );
+        CONTROLS = new Controls();
+
+        DRIVE.setDefaultCommand(new TeleopDriveCommand());
 
         // Configure the button bindings
         configureButtonBindings();

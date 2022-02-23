@@ -1,125 +1,148 @@
 package frc.robot.subsystems;
 
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.CustomGyroModule;
 import org.strykeforce.swerve.SwerveDrive;
 import org.strykeforce.swerve.TalonSwerveModule;
+import frc.robot.Constants.DriveConstants;
+
+import static frc.robot.Constants.TALON_CONFIG_TIMEOUT;
 
 public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     public DriveSubsystem() {
-        var talonModules = new TalonSwerveModule[4];
+        var moduleBuilder =
+                new TalonSwerveModule.Builder()
+                        .driveGearRatio(DriveConstants.DRIVE_GEAR_RATIO)
+                        .wheelDiameterInches(DriveConstants.WHEEL_DIAMETER_INCHES)
+                        .driveMaximumMetersPerSecond(DriveConstants.MAX_SPEED_METERS_PER_SECOND);
 
-        var driveMotorConfig = new TalonFXConfiguration();
-        driveMotorConfig.openloopRamp = 0.5;
-        driveMotorConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-        driveMotorConfig.supplyCurrLimit = new SupplyCurrentLimitConfiguration(true, 25, 30, 0.5);
+        TalonSwerveModule[] swerveModules = new TalonSwerveModule[4];
+        Translation2d[] wheelLocations = DriveConstants.getWheelLocationMeters();
 
-        var rotationMotorConfig = new TalonSRXConfiguration();
-        rotationMotorConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Absolute;
-        rotationMotorConfig.continuousCurrentLimit = 10;
-        rotationMotorConfig.peakCurrentDuration = 0;
-        rotationMotorConfig.peakCurrentLimit = 15;
-        rotationMotorConfig.slot0.kP = 10.0;
-        rotationMotorConfig.slot0.kI = 0.0;
-        rotationMotorConfig.slot0.kD = 100.0;
-        rotationMotorConfig.slot0.kF = 0.0;
-        rotationMotorConfig.slot0.integralZone = 0;
-        rotationMotorConfig.slot0.allowableClosedloopError = 0;
-        rotationMotorConfig.motionAcceleration = 10_000;
-        rotationMotorConfig.motionCruiseVelocity = 800;
 
-        var leftFrontDriveTalon = new TalonFX(Constants.LEFT_FRONT_DRIVE_MOTOR);
-        leftFrontDriveTalon.configFactoryDefault();
-        leftFrontDriveTalon.configAllSettings(driveMotorConfig);
-        leftFrontDriveTalon.setNeutralMode(NeutralMode.Brake);
+        var leftFrontDrive = new TalonFX(DriveConstants.LEFT_FRONT_DRIVE);
+        leftFrontDrive.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        leftFrontDrive.configAllSettings(DriveConstants.getDriveTalonConfig(), TALON_CONFIG_TIMEOUT);
+        leftFrontDrive.enableVoltageCompensation(true);
+        leftFrontDrive.setNeutralMode(NeutralMode.Brake);
 
-        var leftFrontRotationTalon = new TalonSRX(Constants.LEFT_FRONT_ROTATION_MOTOR);
-        leftFrontRotationTalon.configFactoryDefault();
-        leftFrontRotationTalon.configAllSettings(rotationMotorConfig);
+        var leftFrontRotation = new TalonSRX(DriveConstants.LEFT_FRONT_ROTATION);
+        leftFrontRotation.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        leftFrontRotation.configAllSettings(DriveConstants.getAzimuthTalonConfig(), TALON_CONFIG_TIMEOUT);
+        leftFrontRotation.enableCurrentLimit(true);
+        leftFrontRotation.enableVoltageCompensation(true);
+        leftFrontRotation.setNeutralMode(NeutralMode.Coast);
 
-        var rightFrontDriveTalon = new TalonFX(Constants.RIGHT_FRONT_DRIVE_MOTOR);
-        rightFrontDriveTalon.configFactoryDefault();
-        rightFrontDriveTalon.configAllSettings(driveMotorConfig);
-        rightFrontDriveTalon.setNeutralMode(NeutralMode.Brake);
+        var rightFrontDrive = new TalonFX(DriveConstants.RIGHT_FRONT_DRIVE);
+        rightFrontDrive.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        rightFrontDrive.configAllSettings(DriveConstants.getDriveTalonConfig(), TALON_CONFIG_TIMEOUT);
+        rightFrontDrive.enableVoltageCompensation(true);
+        rightFrontDrive.setNeutralMode(NeutralMode.Brake);
 
-        var rightFrontRotationTalon = new TalonSRX(Constants.RIGHT_FRONT_ROTATION_MOTOR);
-        rightFrontRotationTalon.configFactoryDefault();
-        rightFrontRotationTalon.configAllSettings(rotationMotorConfig);
+        var rightFrontRotation = new TalonSRX(DriveConstants.RIGHT_FRONT_ROTATION);
+        rightFrontRotation.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        rightFrontRotation.configAllSettings(DriveConstants.getAzimuthTalonConfig(), TALON_CONFIG_TIMEOUT);
+        rightFrontRotation.enableCurrentLimit(true);
+        rightFrontRotation.enableVoltageCompensation(true);
+        rightFrontRotation.setNeutralMode(NeutralMode.Coast);
 
-        var leftRearDriveTalon = new TalonFX(Constants.LEFT_REAR_DRIVE_MOTOR);
-        leftRearDriveTalon.configFactoryDefault();
-        leftRearDriveTalon.configAllSettings(driveMotorConfig);
-        leftRearDriveTalon.setNeutralMode(NeutralMode.Brake);
+        var leftRearDrive = new TalonFX(DriveConstants.LEFT_REAR_DRIVE);
+        leftRearDrive.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        leftRearDrive.configAllSettings(DriveConstants.getDriveTalonConfig(), TALON_CONFIG_TIMEOUT);
+        leftRearDrive.enableVoltageCompensation(true);
+        leftRearDrive.setNeutralMode(NeutralMode.Brake);
 
-        var leftRearRotationTalon = new TalonSRX(Constants.LEFT_REAR_ROTATION_MOTOR);
-        leftRearRotationTalon.configFactoryDefault();
-        leftRearRotationTalon.configAllSettings(rotationMotorConfig);
+        var leftRearRotation = new TalonSRX(DriveConstants.LEFT_REAR_ROTATION);
+        leftRearRotation.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        leftRearRotation.configAllSettings(DriveConstants.getAzimuthTalonConfig(), TALON_CONFIG_TIMEOUT);
+        leftRearRotation.enableCurrentLimit(true);
+        leftRearRotation.enableVoltageCompensation(true);
+        leftRearRotation.setNeutralMode(NeutralMode.Coast);
 
-        var rightRearDriveTalon = new TalonFX(Constants.RIGHT_REAR_DRIVE_MOTOR);
-        rightRearDriveTalon.configFactoryDefault();
-        rightRearDriveTalon.configAllSettings(driveMotorConfig);
-        rightRearDriveTalon.setNeutralMode(NeutralMode.Brake);
+        var rightRearDrive = new TalonFX(DriveConstants.RIGHT_REAR_DRIVE);
+        rightRearDrive.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        rightRearDrive.configAllSettings(DriveConstants.getDriveTalonConfig(), TALON_CONFIG_TIMEOUT);
+        rightRearDrive.enableVoltageCompensation(true);
+        rightRearDrive.setNeutralMode(NeutralMode.Brake);
 
-        var rightRearRotationTalon = new TalonSRX(Constants.RIGHT_REAR_ROTATION_MOTOR);
-        rightRearRotationTalon.configFactoryDefault();
-        rightRearRotationTalon.configAllSettings(rotationMotorConfig);
+        var rightRearRotation = new TalonSRX(DriveConstants.RIGHT_REAR_ROTATION);
+        rightRearRotation.configFactoryDefault(TALON_CONFIG_TIMEOUT);
+        rightRearRotation.configAllSettings(DriveConstants.getAzimuthTalonConfig(), TALON_CONFIG_TIMEOUT);
+        rightRearRotation.enableCurrentLimit(true);
+        rightRearRotation.enableVoltageCompensation(true);
+        rightRearRotation.setNeutralMode(NeutralMode.Coast);
 
-        var leftFrontWheel = new TalonSwerveModule.Builder();
-        leftFrontWheel.driveTalon(leftFrontDriveTalon);
-        leftFrontWheel.azimuthTalon(leftFrontRotationTalon);
-        leftFrontWheel.driveGearRatio(6.67);
-        leftFrontWheel.wheelDiameterInches(4);
-        leftFrontWheel.driveMaximumMetersPerSecond(4.11);
-        leftFrontWheel.wheelLocationMeters(new Translation2d(-0.267, 0.292));
-        talonModules[0] = leftFrontWheel.build();
+        swerveModules[0] =
+                moduleBuilder
+                        .azimuthTalon(leftFrontRotation)
+                        .driveTalon(leftFrontDrive)
+                        .wheelLocationMeters(wheelLocations[0])
+                        .build();
+        swerveModules[0].loadAndSetAzimuthZeroReference();
 
-        var rightFrontWheel = new TalonSwerveModule.Builder();
-        rightFrontWheel.driveTalon(rightFrontDriveTalon);
-        rightFrontWheel.azimuthTalon(rightFrontRotationTalon);
-        rightFrontWheel.driveGearRatio(6.67);
-        rightFrontWheel.wheelDiameterInches(4);
-        rightFrontWheel.driveMaximumMetersPerSecond(4.11);
-        rightFrontWheel.wheelLocationMeters(new Translation2d(0.267, 0.292));
-        talonModules[1] = rightFrontWheel.build();
+        swerveModules[1] =
+                moduleBuilder
+                        .azimuthTalon(rightFrontRotation)
+                        .driveTalon(rightFrontDrive)
+                        .wheelLocationMeters(wheelLocations[1])
+                        .build();
+        swerveModules[1].loadAndSetAzimuthZeroReference();
 
-        var leftRearWheel = new TalonSwerveModule.Builder();
-        leftRearWheel.driveTalon(leftRearDriveTalon);
-        leftRearWheel.azimuthTalon(leftRearRotationTalon);
-        leftRearWheel.driveGearRatio(6.67);
-        leftRearWheel.wheelDiameterInches(4);
-        leftRearWheel.driveMaximumMetersPerSecond(4.11);
-        leftRearWheel.wheelLocationMeters(new Translation2d(-0.267, -0.292));
-        talonModules[2] = leftRearWheel.build();
+        swerveModules[2] =
+                moduleBuilder
+                        .azimuthTalon(leftRearRotation)
+                        .driveTalon(leftRearDrive)
+                        .wheelLocationMeters(wheelLocations[2])
+                        .build();
+        swerveModules[2].loadAndSetAzimuthZeroReference();
 
-        var rightRearWheel = new TalonSwerveModule.Builder();
-        rightRearWheel.driveTalon(rightRearDriveTalon);
-        rightRearWheel.azimuthTalon(rightRearRotationTalon);
-        rightRearWheel.driveGearRatio(6.67);
-        rightRearWheel.wheelDiameterInches(4);
-        rightRearWheel.driveMaximumMetersPerSecond(4.11);
-        rightRearWheel.wheelLocationMeters(new Translation2d(0.267, -0.292));
-        talonModules[3] = rightRearWheel.build();
+        swerveModules[3] =
+                moduleBuilder
+                        .azimuthTalon(rightRearRotation)
+                        .driveTalon(rightFrontDrive)
+                        .wheelLocationMeters(wheelLocations[3])
+                        .build();
+        swerveModules[3].loadAndSetAzimuthZeroReference();
 
         Gyro robotGyro = CustomGyroModule.getInstance();
+        robotGyro.calibrate();
 
-        swerveDrive = new SwerveDrive(robotGyro, talonModules);
+        swerveDrive = new SwerveDrive(robotGyro, swerveModules);
+        swerveDrive.resetGyro();
     }
 
-    public void drive(double forward, double strafe, double azimuth, boolean isFieldOriented) {
-        swerveDrive.drive(forward, strafe, azimuth, isFieldOriented);
+    /** Perform periodic swerve drive odometry update. */
+    @Override
+    public void periodic() {
+        swerveDrive.periodic();
+    }
+
+    /** Drive the robot with given x, y, and rotational velocities with open-loop velocity control. */
+    public void drive(
+            double vxMetersPerSecond, double vyMetersPerSecond, double omegaRadiansPerSecond, boolean isFieldOriented) {
+        swerveDrive.drive(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond, isFieldOriented);
+    }
+
+    public void resetGyro() {
+        swerveDrive.resetGyro();
+    }
+
+    public void xLockSwerveDrive() {
+        swerveDrive.getSwerveModules()[0]
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(45));
+        swerveDrive.getSwerveModules()[1]
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(-45));
+        swerveDrive.getSwerveModules()[2]
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(-45));
+        swerveDrive.getSwerveModules()[3]
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(45));
     }
 }
-
