@@ -9,10 +9,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.CustomGyroModule;
 import org.strykeforce.swerve.SwerveDrive;
 import org.strykeforce.swerve.TalonSwerveModule;
 
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -103,25 +104,40 @@ public class DriveSubsystem extends SubsystemBase {
         var leftFrontWheel = new TalonSwerveModule.Builder();
         leftFrontWheel.driveTalon(leftFrontDriveTalon);
         leftFrontWheel.azimuthTalon(leftFrontRotationTalon);
+        leftFrontWheel.driveGearRatio(6.67);
+        leftFrontWheel.wheelDiameterInches(4);
+        leftFrontWheel.driveMaximumMetersPerSecond(4.11);
+        leftFrontWheel.wheelLocationMeters(new Translation2d(-0.267, 0.292));
         talonModules[0] = leftFrontWheel.build();
 
         var rightFrontWheel = new TalonSwerveModule.Builder();
         rightFrontWheel.driveTalon(rightFrontDriveTalon);
         rightFrontWheel.azimuthTalon(rightFrontRotationTalon);
-        talonModules[0] = leftFrontWheel.build();
+        rightFrontWheel.driveGearRatio(6.67);
+        rightFrontWheel.wheelDiameterInches(4);
+        rightFrontWheel.driveMaximumMetersPerSecond(4.11);
+        rightFrontWheel.wheelLocationMeters(new Translation2d(0.267, 0.292));
+        talonModules[1] = leftFrontWheel.build();
 
         var leftRearWheel = new TalonSwerveModule.Builder();
         leftRearWheel.driveTalon(leftRearDriveTalon);
         leftRearWheel.azimuthTalon(leftRearRotationTalon);
-        talonModules[0] = leftFrontWheel.build();
+        leftRearWheel.driveGearRatio(6.67);
+        leftRearWheel.wheelDiameterInches(4);
+        leftRearWheel.driveMaximumMetersPerSecond(4.11);
+        leftRearWheel.wheelLocationMeters(new Translation2d(-0.267, -0.292));
+        talonModules[2] = leftFrontWheel.build();
 
         var rightRearWheel = new TalonSwerveModule.Builder();
         rightRearWheel.driveTalon(rightRearDriveTalon);
         rightRearWheel.azimuthTalon(rightRearRotationTalon);
-        talonModules[0] = leftFrontWheel.build();
+        rightRearWheel.driveGearRatio(6.67);
+        rightRearWheel.wheelDiameterInches(4);
+        rightRearWheel.driveMaximumMetersPerSecond(4.11);
+        rightRearWheel.wheelLocationMeters(new Translation2d(0.267, -0.292));
+        talonModules[3] = leftFrontWheel.build();
 
-        @SuppressWarnings("ConstantConditions")
-        Gyro robotGyro = (Gyro) new ADIS16470_IMU();
+        Gyro robotGyro = CustomGyroModule.getInstance();
 
         swerveDrive = new SwerveDrive(robotGyro, talonModules);
     }
