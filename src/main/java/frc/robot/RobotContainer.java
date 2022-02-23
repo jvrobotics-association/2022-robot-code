@@ -33,7 +33,10 @@ public class RobotContainer {
                         () -> joystick.getRawAxis(2),     // Forward & backwards
                         () -> joystick.getRawAxis(1),     // Left & Right
                         () -> joystick.getRawAxis(3),     // Rotation
-                        () -> false));                      // Field Orientation Mode
+                        () -> false,                      // Field Orientation Mode
+                        driveSubsystem
+                    )
+                );
 
         // Configure the button bindings
         configureButtonBindings();

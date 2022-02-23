@@ -13,14 +13,14 @@ public class TeleopDriveCommand extends CommandBase {
     private final DoubleSupplier strafe;
     private final DoubleSupplier yaw;
     private final BooleanSupplier isFieldOriented;
+    private final DriveSubsystem driveSubsystem;
 
-    private final DriveSubsystem driveSubsystem = DriveSubsystem.getInstance();
-
-    public TeleopDriveCommand(DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier yaw, BooleanSupplier isFieldOriented) {
+    public TeleopDriveCommand(DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier yaw, BooleanSupplier isFieldOriented, DriveSubsystem driveSubsystem) {
         this.forward = forward;
         this.strafe = strafe;
         this.yaw = yaw;
         this.isFieldOriented = isFieldOriented;
+        this.driveSubsystem = driveSubsystem;
         addRequirements(this.driveSubsystem);
     }
 

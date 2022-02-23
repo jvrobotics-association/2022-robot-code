@@ -8,51 +8,27 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.CustomGyroModule;
 import org.strykeforce.swerve.SwerveDrive;
 import org.strykeforce.swerve.TalonSwerveModule;
 
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-
 public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
-    /**
-     * The Singleton instance of this DriveSubsystem. Code should use
-     * the {@link #getInstance()} method to get the single instance (rather
-     * than trying to construct an instance of this class.)
-     */
-    private final static DriveSubsystem INSTANCE = new DriveSubsystem();
-
-    /**
-     * Returns the Singleton instance of this DriveSubsystem. This static method
-     * should be used, rather than the constructor, to get the single instance
-     * of this class. For example: {@code DriveSubsystem.getInstance();}
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static DriveSubsystem getInstance() {
-        return INSTANCE;
-    }
-
-    /**
-     * Creates a new instance of this DriveSubsystem. This constructor
-     * is private since this class is a Singleton. Code should use
-     * the {@link #getInstance()} method to get the singleton instance.
-     */
     public DriveSubsystem() {
         var talonModules = new TalonSwerveModule[4];
 
         var driveMotorConfig = new TalonFXConfiguration();
         driveMotorConfig.openloopRamp = 0.5;
-        driveMotorConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Absolute;
+        driveMotorConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         driveMotorConfig.supplyCurrLimit = new SupplyCurrentLimitConfiguration(true, 25, 30, 0.5);
 
         var rotationMotorConfig = new TalonSRXConfiguration();
-        rotationMotorConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+        rotationMotorConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Absolute;
         rotationMotorConfig.continuousCurrentLimit = 10;
         rotationMotorConfig.peakCurrentDuration = 0;
         rotationMotorConfig.peakCurrentLimit = 15;
@@ -117,7 +93,7 @@ public class DriveSubsystem extends SubsystemBase {
         rightFrontWheel.wheelDiameterInches(4);
         rightFrontWheel.driveMaximumMetersPerSecond(4.11);
         rightFrontWheel.wheelLocationMeters(new Translation2d(0.267, 0.292));
-        talonModules[1] = leftFrontWheel.build();
+        talonModules[1] = rightFrontWheel.build();
 
         var leftRearWheel = new TalonSwerveModule.Builder();
         leftRearWheel.driveTalon(leftRearDriveTalon);
@@ -126,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
         leftRearWheel.wheelDiameterInches(4);
         leftRearWheel.driveMaximumMetersPerSecond(4.11);
         leftRearWheel.wheelLocationMeters(new Translation2d(-0.267, -0.292));
-        talonModules[2] = leftFrontWheel.build();
+        talonModules[2] = leftRearWheel.build();
 
         var rightRearWheel = new TalonSwerveModule.Builder();
         rightRearWheel.driveTalon(rightRearDriveTalon);
@@ -135,7 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
         rightRearWheel.wheelDiameterInches(4);
         rightRearWheel.driveMaximumMetersPerSecond(4.11);
         rightRearWheel.wheelLocationMeters(new Translation2d(0.267, -0.292));
-        talonModules[3] = leftFrontWheel.build();
+        talonModules[3] = rightRearWheel.build();
 
         Gyro robotGyro = CustomGyroModule.getInstance();
 
@@ -146,3 +122,4 @@ public class DriveSubsystem extends SubsystemBase {
         swerveDrive.drive(forward, strafe, azimuth, isFieldOriented);
     }
 }
+

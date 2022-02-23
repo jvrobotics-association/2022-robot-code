@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import frc.robot.subsystems.DriveSubsystem;
 
 public class CustomGyroModule implements Gyro {
     private final static CustomGyroModule INSTANCE = new CustomGyroModule();
