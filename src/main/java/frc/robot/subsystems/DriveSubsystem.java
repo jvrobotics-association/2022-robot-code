@@ -109,7 +109,8 @@ public class DriveSubsystem extends SubsystemBase {
         
 
         DigitalInput realignWheels = new DigitalInput(0);
-        if (realignWheels.get()) {
+        // if (realignWheels.get()) {
+        if (true) {
                 swerveModules[0].loadAndSetAzimuthZeroReference();
                 swerveModules[1].loadAndSetAzimuthZeroReference();
                 swerveModules[2].loadAndSetAzimuthZeroReference();
