@@ -5,11 +5,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CustomGyroModule;
 import org.strykeforce.swerve.SwerveDrive;
-import org.strykeforce.swerve.TalonSwerveModule;
 import frc.robot.Constants.DriveConstants;
 
 import static frc.robot.Constants.TALON_CONFIG_TIMEOUT;
@@ -19,12 +19,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     public DriveSubsystem() {
         var moduleBuilder =
-                new TalonSwerveModule.Builder()
+                new CustomSwerveModule.Builder()
                         .driveGearRatio(DriveConstants.DRIVE_GEAR_RATIO)
                         .wheelDiameterInches(DriveConstants.WHEEL_DIAMETER_INCHES)
                         .driveMaximumMetersPerSecond(DriveConstants.MAX_SPEED_METERS_PER_SECOND);
 
-        TalonSwerveModule[] swerveModules = new TalonSwerveModule[4];
+        CustomSwerveModule[] swerveModules = new CustomSwerveModule[4];
         Translation2d[] wheelLocations = DriveConstants.getWheelLocationMeters();
 
 
@@ -86,7 +86,6 @@ public class DriveSubsystem extends SubsystemBase {
                         .driveTalon(leftFrontDrive)
                         .wheelLocationMeters(wheelLocations[0])
                         .build();
-        swerveModules[0].loadAndSetAzimuthZeroReference();
 
         swerveModules[1] =
                 moduleBuilder
@@ -94,15 +93,12 @@ public class DriveSubsystem extends SubsystemBase {
                         .driveTalon(rightFrontDrive)
                         .wheelLocationMeters(wheelLocations[1])
                         .build();
-        swerveModules[1].loadAndSetAzimuthZeroReference();
-
         swerveModules[2] =
                 moduleBuilder
                         .azimuthTalon(leftRearRotation)
                         .driveTalon(leftRearDrive)
                         .wheelLocationMeters(wheelLocations[2])
                         .build();
-        swerveModules[2].loadAndSetAzimuthZeroReference();
 
         swerveModules[3] =
                 moduleBuilder
@@ -110,7 +106,16 @@ public class DriveSubsystem extends SubsystemBase {
                         .driveTalon(rightFrontDrive)
                         .wheelLocationMeters(wheelLocations[3])
                         .build();
-        swerveModules[3].loadAndSetAzimuthZeroReference();
+        
+
+        DigitalInput realignWheels = new DigitalInput(0);
+        if (realignWheels.get()) {
+                swerveModules[0].loadAndSetAzimuthZeroReference();
+                swerveModules[1].loadAndSetAzimuthZeroReference();
+                swerveModules[2].loadAndSetAzimuthZeroReference();
+                swerveModules[3].loadAndSetAzimuthZeroReference();
+        }
+        realignWheels.close();
 
         Gyro robotGyro = CustomGyroModule.getInstance();
         robotGyro.calibrate();
