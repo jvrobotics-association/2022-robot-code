@@ -103,26 +103,17 @@ public class DriveSubsystem extends SubsystemBase {
         swerveModules[3] =
                 moduleBuilder
                         .azimuthTalon(rightRearRotation)
-                        .driveTalon(rightFrontDrive)
+                        .driveTalon(rightRearDrive)
                         .wheelLocationMeters(wheelLocations[3])
                         .build();
+                
         
+        swerveModules[0].loadAndSetAzimuthZeroReference();
+        swerveModules[1].loadAndSetAzimuthZeroReference();
+        swerveModules[2].loadAndSetAzimuthZeroReference();
+        swerveModules[3].loadAndSetAzimuthZeroReference();
 
-        DigitalInput realignWheels = new DigitalInput(0);
-        // if (realignWheels.get()) {
-        if (true) {
-                swerveModules[0].loadAndSetAzimuthZeroReference();
-                swerveModules[1].loadAndSetAzimuthZeroReference();
-                swerveModules[2].loadAndSetAzimuthZeroReference();
-                swerveModules[3].loadAndSetAzimuthZeroReference();
-        }
-        realignWheels.close();
-
-        Gyro robotGyro = CustomGyroModule.getInstance();
-        robotGyro.calibrate();
-
-        swerveDrive = new SwerveDrive(robotGyro, swerveModules);
-        swerveDrive.resetGyro();
+        swerveDrive = new SwerveDrive(swerveModules);
     }
 
     /** Perform periodic swerve drive odometry update. */
@@ -139,16 +130,5 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetGyro() {
         swerveDrive.resetGyro();
-    }
-
-    public void xLockSwerveDrive() {
-        swerveDrive.getSwerveModules()[0]
-                .setAzimuthRotation2d(Rotation2d.fromDegrees(45));
-        swerveDrive.getSwerveModules()[1]
-                .setAzimuthRotation2d(Rotation2d.fromDegrees(-45));
-        swerveDrive.getSwerveModules()[2]
-                .setAzimuthRotation2d(Rotation2d.fromDegrees(-45));
-        swerveDrive.getSwerveModules()[3]
-                .setAzimuthRotation2d(Rotation2d.fromDegrees(45));
     }
 }

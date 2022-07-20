@@ -56,7 +56,7 @@ public final class Constants {
         public static TalonSRXConfiguration getAzimuthTalonConfig() {
             TalonSRXConfiguration azimuthConfig = new TalonSRXConfiguration();
 
-            //azimuthConfig.primaryPID.selectedFeedbackCoefficient = 1.0;
+            // azimuthConfig.primaryPID.selectedFeedbackCoefficient = 1.0;
             azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.Analog;
             azimuthConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.None;
 
@@ -68,7 +68,7 @@ public final class Constants {
             azimuthConfig.peakCurrentLimit = 0;
             azimuthConfig.slot0.kP = 10.0;
             azimuthConfig.slot0.kI = 0.0;
-            azimuthConfig.slot0.kD = 100.0;
+            azimuthConfig.slot0.kD = 0.0;
             azimuthConfig.slot0.kF = 0.0;
             azimuthConfig.slot0.integralZone = 0;
             azimuthConfig.slot0.allowableClosedloopError = 0;
@@ -118,7 +118,8 @@ public final class Constants {
 
     public static final class ShooterConstants {
         public static final int INTAKE_MOTOR = 10;
-        public static final int INDEXER_MOTOR = 11;
-        public static final int SHOOTER_MOTOR = 12;
+        public static final int SECONDARY_INTAKE_MOTOR = 11;
+        public static final int INDEXER_MOTOR = 12;
+        public static final int SHOOTER_MOTOR = 13;
     }
 }
