@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 
 /**
@@ -21,6 +24,9 @@ import frc.robot.subsystems.DriveSubsystem;
 public class RobotContainer {
     public static Constants CONSTANTS;
     public static DriveSubsystem DRIVE;
+    public static ElevatorSubsystem ELEVATOR;
+    public static ShooterSubsystem SHOOTER;
+    public static IntakeSubsystem INTAKE;
     public static Controls CONTROLS;
 
     /**
@@ -29,6 +35,9 @@ public class RobotContainer {
     public RobotContainer() {
         CONSTANTS = new Constants();
         DRIVE = new DriveSubsystem();
+        ELEVATOR = new ElevatorSubsystem();
+        SHOOTER = new ShooterSubsystem();
+        INTAKE = new IntakeSubsystem();
 
         CONTROLS = new Controls();
 
