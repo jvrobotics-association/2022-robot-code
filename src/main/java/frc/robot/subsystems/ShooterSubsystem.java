@@ -2,15 +2,15 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
     private final TalonSRX flywheel = new TalonSRX(Constants.ShooterConstants.SHOOTER_MOTOR);
-    private final VictorSPX indexer = new VictorSPX(Constants.ShooterConstants.INDEXER_MOTOR);
+    private final Spark indexer = new Spark(Constants.ShooterConstants.INDEXER_MOTOR);
 
     public ShooterSubsystem() {}
 
@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void runIndexer(double percentOutput) {
         if (percentOutput > 1.0) percentOutput = 1.0;
         if (percentOutput < -1.0) percentOutput = -1.0;
-        indexer.set(ControlMode.PercentOutput, percentOutput);
+        indexer.set(percentOutput);
     }
 
     public void stopShooter() {
@@ -31,6 +31,6 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void stopIndexer() {
-        indexer.set(ControlMode.PercentOutput, 0.0);
+        indexer.stopMotor();
     }
 }
