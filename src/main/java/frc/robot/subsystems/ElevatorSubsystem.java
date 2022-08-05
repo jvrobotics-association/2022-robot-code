@@ -11,6 +11,10 @@ public class ElevatorSubsystem extends SubsystemBase{
     
     private final CANSparkMax elevator = new CANSparkMax(Constants.ElevatorConstants.ELEVATOR_MOTOR, MotorType.kBrushless);
 
+    public final double lowerEndPoint = 0.0;
+    public final double upperEndPoint = 530.0;
+    public final double acceptableError = 5.0;
+
     public ElevatorSubsystem() {
         elevator.setInverted(true);
     }

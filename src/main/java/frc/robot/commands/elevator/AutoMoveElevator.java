@@ -7,9 +7,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 public class AutoMoveElevator extends CommandBase {
     private final ElevatorSubsystem ELEVATOR = RobotContainer.ELEVATOR;
 
-    private final double lowerEndPoint = 0.0;
-    private final double upperEndPoint = 530.0;
-    private final double acceptableError = 5.0;
+    private static boolean locked = true;
 
     // used to determine direction
     private boolean isGoingDown;
@@ -18,26 +16,30 @@ public class AutoMoveElevator extends CommandBase {
         addRequirements(ELEVATOR);
     }
 
-    // TODO: implement locking switch
+    public static void setLock(boolean isLocked) {
+        locked = isLocked;
+    }
 
     @Override
     public void initialize() {
+        if (locked) return;
         double elevatorPos = ELEVATOR.getElevatorPosition();
 
         // if extended go down
-        isGoingDown = (elevatorPos > lowerEndPoint + acceptableError);
+        isGoingDown = (elevatorPos > ELEVATOR.lowerEndPoint + ELEVATOR.acceptableError);
         
         ELEVATOR.runElevator(isGoingDown ? -1.0 : 1.0);
     }
 
     @Override
     public boolean isFinished() {
+        if (locked) return true;
         double elevatorPos = ELEVATOR.getElevatorPosition();
 
         if (isGoingDown) {
-            return (elevatorPos - lowerEndPoint < acceptableError);
+            return (elevatorPos - ELEVATOR.lowerEndPoint < ELEVATOR.acceptableError);
         } else {
-            return (upperEndPoint - elevatorPos < acceptableError);
+            return (ELEVATOR.upperEndPoint - elevatorPos < ELEVATOR.acceptableError);
         }
     }
 

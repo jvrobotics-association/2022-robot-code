@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.elevator.AutoMoveElevator;
 import frc.robot.commands.elevator.ElevatorDown;
 import frc.robot.commands.elevator.ElevatorUp;
+import frc.robot.commands.elevator.LockElevator;
+import frc.robot.commands.elevator.UnlockManualElevatorBounds;
 import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.ReverseUpperIntake;
 import frc.robot.commands.intake.RunIntake;
@@ -21,9 +23,6 @@ public class DriverControls {
         driveJoystick = new Joystick(drivePortNumer);
         controlPannel = new Joystick(controlPortNumber);
 
-
-        // TODO: Reconfigure button mapping to match the driver's preference
-
         // joystick commands
         new JoystickButton(driveJoystick, 1).toggleWhenPressed(new Shoot());
         new JoystickButton(driveJoystick, 2).toggleWhenPressed(new RunIntake());
@@ -35,6 +34,8 @@ public class DriverControls {
         new JoystickButton(driveJoystick, 8).whenHeld(new ForwardIndexer());
         
         // control pannel commands
+        new JoystickButton(controlPannel, 1).whenPressed(new LockElevator());
+        new JoystickButton(controlPannel, 2).whenPressed(new UnlockManualElevatorBounds());
         new JoystickButton(controlPannel, 4).whenHeld(new ElevatorUp());
         new JoystickButton(controlPannel, 5).whenHeld(new ElevatorDown());
     }
