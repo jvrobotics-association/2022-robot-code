@@ -14,6 +14,13 @@ public class ReverseIntake extends CommandBase {
 
     @Override
     public void initialize() {
+        System.out.println("Initializing");
+        INTAKE.runIntakeArm(-0.5);
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("Executing");
         INTAKE.runIntakeArm(-0.5);
     }
 
@@ -21,5 +28,4 @@ public class ReverseIntake extends CommandBase {
     public void end(boolean interupted) {
         INTAKE.stopIntakeArm();
     }
-
 }

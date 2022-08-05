@@ -35,8 +35,8 @@ public class DriverControls {
         new JoystickButton(driveJoystick, 8).whenHeld(new ForwardIndexer());
         
         // control pannel commands
-        new JoystickButton(controlPannel, 1).whenHeld(new ElevatorUp());
-        new JoystickButton(controlPannel, 2).whenHeld(new ElevatorDown());
+        new JoystickButton(controlPannel, 4).whenHeld(new ElevatorUp());
+        new JoystickButton(controlPannel, 5).whenHeld(new ElevatorDown());
     }
 
     public double getForward() {

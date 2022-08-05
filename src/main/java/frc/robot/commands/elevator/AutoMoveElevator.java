@@ -8,8 +8,8 @@ public class AutoMoveElevator extends CommandBase {
     private final ElevatorSubsystem ELEVATOR = RobotContainer.ELEVATOR;
 
     private final double lowerEndPoint = 0.0;
-    private final double upperEndPoint = 380.0;
-    private final double acceptableError = 10.0;
+    private final double upperEndPoint = 530.0;
+    private final double acceptableError = 5.0;
 
     // used to determine direction
     private boolean isGoingDown;

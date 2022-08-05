@@ -19,7 +19,6 @@ public class Shoot extends CommandBase {
     @Override
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
-        SHOOTER.runShooter(1.0);
     }
 
     @Override
@@ -28,6 +27,7 @@ public class Shoot extends CommandBase {
         if (currentTime > startTime + revTime) {
             SHOOTER.runIndexer(0.4);
         }
+        SHOOTER.runShooter(1.0);
     }
 
     @Override
