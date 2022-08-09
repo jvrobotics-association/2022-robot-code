@@ -37,8 +37,8 @@ public class DriverControls {
         new JoystickButton(driveJoystick, 9).whenHeld(new CalibrateElevator());
         
         // control pannel commands
-        new JoystickButton(controlPannel, 1).whenPressed(new LockElevator());
-        new JoystickButton(controlPannel, 2).whenPressed(new UnlockManualElevatorBounds());
+        new JoystickButton(controlPannel, 1).whenHeld(new LockElevator());
+        new JoystickButton(controlPannel, 2).whenHeld(new UnlockManualElevatorBounds());
         new JoystickButton(controlPannel, 4).whenHeld(new ElevatorUp());
         new JoystickButton(controlPannel, 5).whenHeld(new ElevatorDown());
         new JoystickButton(controlPannel, 3).whenHeld(new UnlockTurbo());

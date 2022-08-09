@@ -14,8 +14,8 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     // values are in percent of full speed
-    private final double speedLimiter = 0.85;
-    private final double rotationSpeedLimiter = 0.45;
+    private final double speedLimiter = 0.40;
+    private final double rotationSpeedLimiter = 0.40;
 
     private boolean turboLocked = true;
 
