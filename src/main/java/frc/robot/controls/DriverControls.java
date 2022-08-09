@@ -42,6 +42,7 @@ public class DriverControls {
         new JoystickButton(controlPannel, 4).whenHeld(new ElevatorUp());
         new JoystickButton(controlPannel, 5).whenHeld(new ElevatorDown());
         new JoystickButton(controlPannel, 3).whenHeld(new UnlockTurbo());
+        new JoystickButton(controlPannel, 6).whenHeld(new CalibrateElevator());
     }
 
     public double getForward() {

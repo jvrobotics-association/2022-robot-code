@@ -14,13 +14,14 @@ public class ElevatorSubsystem extends SubsystemBase{
     public final double lowerEndPoint = 0.0;
     public final double upperEndPoint = 530.0;
     public final double acceptableError = 5.0;
+    private double offset = 0.0;
 
     public ElevatorSubsystem() {
         elevator.setInverted(true);
     }
 
     public void zeroElevator() {
-        elevator.getEncoder().setPosition(0);
+        offset = elevator.getEncoder().getPosition();
     }
 
     public void runElevator(double percentOutput) {
@@ -36,6 +37,6 @@ public class ElevatorSubsystem extends SubsystemBase{
     }
 
     public double getElevatorPosition() {
-        return elevator.getEncoder().getPosition();
+        return elevator.getEncoder().getPosition() - offset;
     }
 }
