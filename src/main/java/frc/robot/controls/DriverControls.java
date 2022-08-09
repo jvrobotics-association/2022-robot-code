@@ -2,7 +2,9 @@ package frc.robot.controls;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.drive.UnlockTurbo;
 import frc.robot.commands.elevator.AutoMoveElevator;
+import frc.robot.commands.elevator.CalibrateElevator;
 import frc.robot.commands.elevator.ElevatorDown;
 import frc.robot.commands.elevator.ElevatorUp;
 import frc.robot.commands.elevator.LockElevator;
@@ -32,12 +34,14 @@ public class DriverControls {
         new JoystickButton(driveJoystick, 6).whenHeld(new ReverseIntake());
         new JoystickButton(driveJoystick, 7).whenHeld(new ReverseUpperIntake());
         new JoystickButton(driveJoystick, 8).whenHeld(new ForwardIndexer());
+        new JoystickButton(driveJoystick, 9).whenHeld(new CalibrateElevator());
         
         // control pannel commands
         new JoystickButton(controlPannel, 1).whenPressed(new LockElevator());
         new JoystickButton(controlPannel, 2).whenPressed(new UnlockManualElevatorBounds());
         new JoystickButton(controlPannel, 4).whenHeld(new ElevatorUp());
         new JoystickButton(controlPannel, 5).whenHeld(new ElevatorDown());
+        new JoystickButton(controlPannel, 3).whenHeld(new UnlockTurbo());
     }
 
     public double getForward() {

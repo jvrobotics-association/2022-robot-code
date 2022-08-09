@@ -13,6 +13,12 @@ import static frc.robot.Constants.TALON_CONFIG_TIMEOUT;
 public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
+    // values are in percent of full speed
+    private final double speedLimiter = 0.85;
+    private final double rotationSpeedLimiter = 0.45;
+
+    private boolean turboLocked = true;
+
     public DriveSubsystem() {
         var moduleBuilder =
                 new CustomSwerveModule.Builder()
@@ -121,10 +127,14 @@ public class DriveSubsystem extends SubsystemBase {
     /** Drive the robot with given x, y, and rotational velocities with open-loop velocity control. */
     public void drive(
             double vxMetersPerSecond, double vyMetersPerSecond, double omegaRadiansPerSecond, boolean isFieldOriented) {
-        swerveDrive.drive(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond, isFieldOriented);
+        swerveDrive.drive(vxMetersPerSecond * (turboLocked ? speedLimiter : 1), vyMetersPerSecond * (turboLocked ? speedLimiter : 1), omegaRadiansPerSecond * (turboLocked ? rotationSpeedLimiter : 1), isFieldOriented);
     }
 
     public void resetGyro() {
         swerveDrive.resetGyro();
+    }
+
+    public void unlockTurbo(boolean lock) {
+        turboLocked = !lock;
     }
 }

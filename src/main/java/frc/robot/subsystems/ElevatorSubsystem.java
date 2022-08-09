@@ -19,6 +19,10 @@ public class ElevatorSubsystem extends SubsystemBase{
         elevator.setInverted(true);
     }
 
+    public void zeroElevator() {
+        elevator.getEncoder().setPosition(0);
+    }
+
     public void runElevator(double percentOutput) {
         if (percentOutput > 1.0) percentOutput = 1.0;
         if (percentOutput < -1.0) percentOutput = -1.0;
