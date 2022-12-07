@@ -15,7 +15,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // values are in percent of full speed
     private final double speedLimiter = 0.40;
-    private final double rotationSpeedLimiter = 0.40;
+    private final double rotationSpeedLimiter = 0.50;
 
     private boolean turboLocked = true;
 
